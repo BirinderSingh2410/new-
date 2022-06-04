@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import loginBg from "../../asset/images/login-bg.gif";
 import LoginDropBox from "../LoginDropBox/LoginDropBox";
-import AlertBox from "../AlertBox/AlertBox";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const BackgroundBg = styled.div`
   background-image: url(${loginBg});
@@ -36,17 +38,47 @@ const HomePage = () => {
 
   return (
     <BackgroundBg>
+     <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          value=""/>
       {loginAlert ? (
-        <AlertBox type="error" content="User Not Registered" />
+        <div style={{display:"none"}}>
+          {toast.error("User Not Registered!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          })}</div>
+        
       ) : null}
       {loginDoneAlert ? (
-        <AlertBox type="success" content="Login Successfully" />
+        <div style={{display:"none"}}>{toast("Login Successfull!!")}</div>
       ) : null}
       {signUpAlert ? (
-        <AlertBox type="error" content="User Credentials not valid" />
+        <div style={{display:"none"}}>
+          {toast.error("User Credentials Not valid!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          })}</div>
       ) : null}
       {signUpDoneAlert ? (
-        <AlertBox type="success" content="User Registered Successfully" />
+        <div style={{display:"none"}}>{toast("User Registered Successfull!!")}</div>
       ) : null}
       <h1>Welcome !</h1>
       <LoginDropBox
@@ -55,6 +87,7 @@ const HomePage = () => {
         setSignUpAlert={setSignUpAlert}
         setSignUpDoneAlert={setSignUpDoneAlert}
       />
+     
     </BackgroundBg>
   );
 };

@@ -5,10 +5,12 @@ import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import { CircularProgress, OutlinedInput } from "@mui/material";
 import { ChatState } from "../Context/ChatProvider";
-import AlertBox from "../AlertBox/AlertBox";
+
 import ScrollableChat from "../ScrollableChat/ScrollableChat";
 import TypingGif from "../../asset/images/dots_2.gif";
 import io from "socket.io-client";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ChatBox = styled.div`
   width: 100%;
@@ -94,6 +96,7 @@ const ChatBoxMessage = ({ fetchAgain, setFetchAgain }) => {
         selectedChatCompare._id !== newMessageRecieved.chat._id
       ) {
         //bell icon
+        
         if (!notification.includes(newMessageRecieved)) {
           setNotification([newMessageRecieved, ...notification]);
           setFetchAgain(!fetchAgain);
@@ -130,7 +133,15 @@ const ChatBoxMessage = ({ fetchAgain, setFetchAgain }) => {
 
       socket.emit("join chat", selectedchat._id); //creating room for the realtime chat with selectedchatID
     } catch (error) {
-      <AlertBox type="error" content="Error While fetching the messages" />;
+      toast.error("Error While Fetching Messages!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
     }
   };
 
@@ -158,7 +169,15 @@ const ChatBoxMessage = ({ fetchAgain, setFetchAgain }) => {
         socket.emit("new message", data); //sending data to the room
         setMessages([...messages, data]);
       } catch (error) {
-        <AlertBox type="error" content="Error while sending message" />;
+        toast.error("Error while sending messages!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
       }
     }
   };
@@ -187,6 +206,17 @@ const ChatBoxMessage = ({ fetchAgain, setFetchAgain }) => {
   };
   return (
     <ChatBox>
+       <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          value=""/>
       {loading ? (
         <CircularProgress
           style={{ width: "50px", height: "50px", marginTop: "40%" }}

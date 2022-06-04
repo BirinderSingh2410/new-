@@ -23,6 +23,8 @@ import List from "@mui/material/List";
 import AlertBox from "../AlertBox/AlertBox";
 import { ChatState } from "../Context/ChatProvider";
 import { getSenderName } from "../../Config/ChatLogics";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SideDrawerBox = styled.div`
   height: 12vh;
@@ -141,6 +143,7 @@ const SideDrawer = ({ setProfile }) => {
   const [loadingchat, setLoadingChat] = useState(false);
   const [opennotification, setOpenNotification] = useState(false);
 
+
   const {
     user,
     setSelectedChat,
@@ -202,7 +205,21 @@ const SideDrawer = ({ setProfile }) => {
   };
 
   const accessChat = async (userId) => {
-    //acess chat with particular user..
+    //acess chat with particular user.
+    var c= 0;
+    if(chats.length > 0){
+     
+      chats.map((i)=>{
+        if(i.users[1]._id == userId){
+          console.log("1");
+          toast("You are already chatting with the user!!")
+          c++;
+        }
+      })
+    }
+    console.log("2");
+    if(c==0){
+      
     try {
       setLoadingChat(true);
       const token = user.data.token;
@@ -221,6 +238,7 @@ const SideDrawer = ({ setProfile }) => {
       setSlider(false);
     } catch (error) {
       <AlertBox type="error" content="Error fetching the Chat" />;
+    }
     }
   };
 
@@ -242,9 +260,7 @@ const SideDrawer = ({ setProfile }) => {
         open={sideslider}
         onClose={() => setSlider(false)}
       >
-        {alert ? (
-          <AlertBox type="error" content="please fill User name" />
-        ) : null}
+        
         <List>
           <ListItem>
             <ListItemText>
@@ -297,7 +313,7 @@ const SideDrawer = ({ setProfile }) => {
       <NotifictaionBox>
         <NotificationIconBox onClick={notificationClick}>
           <Badge badgeContent={notification.length} color="primary">
-            <NotificationsIcon style={{ marginTop: "40%" }} />
+            <NotificationsIcon style={{ marginTop: "40%" ,color:notification.length ? "red":"white"}} />
           </Badge>
         </NotificationIconBox>
         <Menu

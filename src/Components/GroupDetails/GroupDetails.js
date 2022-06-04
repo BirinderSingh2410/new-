@@ -5,7 +5,9 @@ import { ChatState } from "../Context/ChatProvider";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import AlertBox from "../AlertBox/AlertBox";
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import GroupUser from "../GroupUser/GroupUser";
 import { OutlinedInput } from "@mui/material";
 import { Button } from "@mui/material";
@@ -38,7 +40,7 @@ const GroupDetails = ({ show, setShow, setFetchAgain, fetchAgain }) => {
   const deleteFromSelected = async (userId) => {
     
     if (selectedchat.groupAdmin !== user.data._id && userId._id !== user.data._id) {
-      <AlertBox type="error" content="only admin can remove Someone" />;
+      toast("only admin can remove Someone");
       return;
     }
     try {
@@ -63,7 +65,15 @@ const GroupDetails = ({ show, setShow, setFetchAgain, fetchAgain }) => {
       fetchMessages();
       setLoading(false);
     } catch (error) {
-      return <AlertBox type="error" content="Error fetching the Chat" />;
+      toast.error("Error fetching the Chat",{
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
     }
   };
   function renameGroup() {
@@ -88,9 +98,15 @@ const GroupDetails = ({ show, setShow, setFetchAgain, fetchAgain }) => {
       setFetchAgain(!fetchAgain);
       setRenameLoading(false);
     } catch {
-      return (
-        <AlertBox type="error" content="Something went wrong while Renaming" />
-      );
+      toast.error("Something went wrong while Renaming",{
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
       setRenameLoading(false);
     }
     setGroupChatName("");
@@ -112,20 +128,28 @@ const GroupDetails = ({ show, setShow, setFetchAgain, fetchAgain }) => {
       setLoading(false);
       setSearchResults(data);
     } catch (error) {
-      return <AlertBox type="error" content="Error While fetching the user" />;
+      toast.error("Error While fetching the user",{
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
     }
   };
 
   const addUser = async (userId) => {
     if (selectedchat.users.find((i) => i._id === userId._id)) {
       //if the user already exist
-      return <AlertBox type="info" content="User already exist in the group" />;
+      toast("User already exist in the group");
+      return;
     }
     if (selectedchat.groupAdmin !== user.data._id) {
       //if other than group admin adds the user
-      return (
-        <AlertBox type="error" content="only admin can add to the group" />
-      );
+      toast("Only Admin Can add to the Group!")
+      return;
     }
     try {
       setLoading(true);
@@ -147,7 +171,15 @@ const GroupDetails = ({ show, setShow, setFetchAgain, fetchAgain }) => {
       setFetchAgain(!fetchAgain);
       setLoading(false);
     } catch (error) {
-      return <AlertBox type="error" content="Error fetching the Chat" />;
+      toast.error("Error fetching the Chat",{
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
     }
   };
 
@@ -169,11 +201,30 @@ const GroupDetails = ({ show, setShow, setFetchAgain, fetchAgain }) => {
       
       setMessages(data);
     } catch (error) {
-      <AlertBox type="error" content="Error While fetching the messages" />;
+      toast.error("Error While fetching the messages",{
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
     }
   };
   return (
     <Dialog open={show} fullWidth onClose={() => setShow(false)}>
+      <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          value=""/>
       <DialogContent style={{ textAlign: "end" }}>
         <Icon onClick={() => setShow(false)}>
           <CloseIcon className="icon-btn" />

@@ -6,7 +6,8 @@ import { Button, DialogActions } from "@mui/material";
 import styled from "styled-components";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import { CircularProgress } from "@mui/material";
-import AlertBox from "../AlertBox/AlertBox";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { ChatState } from "../Context/ChatProvider";
 import axios from "axios";
 import GroupUser from "../GroupUser/GroupUser";
@@ -61,13 +62,22 @@ const CreateGroupPop = ({ grouppopup, setGroupPopUp }) => {
       setSearchResult(data);
       await setLoading(false);
     } catch (error) {
-      <AlertBox type="error" content="Error fetching the Users" />;
+      toast.error("Error fetching the Users" , {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
     }
   };
 
   const addToGroup = (usertoadd) => {
     if (selectedusers.includes(usertoadd)) {
-      return <AlertBox type="info" conetent="User already Added" />;
+      toast("User already Added");
+      return;
     } else {
       setSelecteUsers([...selectedusers, usertoadd]);
     }
@@ -79,7 +89,8 @@ const CreateGroupPop = ({ grouppopup, setGroupPopUp }) => {
 
   const createGroup = async () => {
     if (selectedusers.length === 0 || groupname === "") {
-      return <AlertBox type="error" content="Please Fill All the Fields" />;
+      toast("Please Fill all the fields!");
+      return;
     } else {
       try {
         const token = user.data.token;
@@ -98,19 +109,32 @@ const CreateGroupPop = ({ grouppopup, setGroupPopUp }) => {
         );
         setChats([data, ...chats]); //adding to the chats array
         setGroupPopUp(false);
-        <AlertBox type="success" content="Group Created" />;
+        toast("Group Created");
       } catch (error) {
-        return (
-          <AlertBox
-            type="error"
-            content="Something went wrong while creating Group"
-          />
-        );
+          toast.error("Something went wrong while creating Group",{position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          })
       }
     }
   };
   return (
     <CreateGroupBox>
+      <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          value=""/>
       <Dialog
         sx={{ textAlign: "center" }}
         fullWidth

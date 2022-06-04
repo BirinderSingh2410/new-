@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import AlertBox from "../AlertBox/AlertBox";
 import axios from "axios";
 import styled from "styled-components";
 import { Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import ChatLoading from "../ChatLoading/ChatLoading";
 import { getSenderName } from "../../Config/ChatLogics";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { ChatState } from "../Context/ChatProvider";
+import Avatar from "@mui/material/Avatar";
 import CreateGroupPop from "../CreateGroupPopUp/CreateGroupPop";
 
 const MyChatsBox = styled.div`
@@ -55,6 +57,8 @@ const UserChat = styled.div`
   border-radius: 10px;
   height: 50px;
   background-color: white;
+  display:flex;
+  justify-content:center;
   padding-top: 1vh;
   padding-bottom: 1vh;
   margin-top: 2vh;
@@ -64,6 +68,7 @@ const UserChat = styled.div`
   color: black;
   h2 {
     margin-left: 2vw;
+    font-size:2em;
   }
   :hover {
     cursor: pointer;
@@ -118,7 +123,15 @@ const MyChats = ({ fetchAgain }) => {
       const { data } = await axios.get("/api/chat", config);
       setChats(data);
     } catch (error) {
-      <AlertBox type="error" content="Error fetching the chat" />;
+     toast.error("Error fetching the chat",{
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
     }
   };
   useEffect(() => {
@@ -126,8 +139,20 @@ const MyChats = ({ fetchAgain }) => {
     fetchChats();
   }, [fetchAgain]);
 
+
   return (
     <MyChatsBox>
+      <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          value=""/>
       <CreateGroup>
         <h3>My Chats</h3>
         <Button
@@ -155,7 +180,9 @@ const MyChats = ({ fetchAgain }) => {
                 }}
                 style={{ backgroundColor: { color } }}
               >
+                {i.isGroupChat ? null :  <Avatar alt={i.users[1].name} src={i.users[1].pic} className="avatar" />}
                 <h2>
+                  
                   {i.isGroupChat
                     ? i.chatName
                     : getSenderName(loggedUser, i.users)}

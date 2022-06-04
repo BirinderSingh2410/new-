@@ -27,7 +27,7 @@ const ScrollBar = styled.div`
 `;
 const ScrollableChat = ({ messages }) => {
   const { user } = ChatState();
-
+console.log(messages+"   "+user);
   return (
     <ScrollBar>
       {messages &&
@@ -52,6 +52,7 @@ const ScrollableChat = ({ messages }) => {
                   marginTop: isSameUser(messages, i, index) ? "3" : "10",
                 }}
               >
+                {(i.chat.isGroupChat && (i.sender._id != user.data._id)) ? i.sender.name + ":"+ "  ": null}
                 {i.content}
               </span>
             </div>

@@ -1,4 +1,4 @@
-import React, { useState,useRef } from "react";
+import React, { useState} from "react";
 import styled from "styled-components";
 import LoginInput from "../LoginInput/LoginInput";
 import { useForm } from "react-hook-form";
@@ -7,6 +7,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import { ChatState } from "../Context/ChatProvider";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SignUpBox = styled.form`
   width: 100%;
@@ -127,7 +129,15 @@ const SignUp = ({ setSignUpAlert, setSignUpDoneAlert }) => {
   };
   function getDetails(data) {
     if (data.password !== data.confirmPassword) {
-      alert("Password and Confirm Password are not same");
+      toast.error("Password Doesn't Match!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
     } else {
       sendDataToMongo(data);
     }
@@ -135,7 +145,17 @@ const SignUp = ({ setSignUpAlert, setSignUpDoneAlert }) => {
 
   return (
     <SignUpBox onSubmit={handleSubmit(getDetails)}>
-      
+      <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          value=""/>
       <LoginInput
         register={{ ...register("name", { required: true }) }}
         label="Name"
