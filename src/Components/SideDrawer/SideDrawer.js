@@ -211,13 +211,12 @@ const SideDrawer = ({ setProfile }) => {
      
       chats.map((i)=>{
         if(i.users[1]._id == userId){
-          console.log("1");
           toast("You are already chatting with the user!!")
           c++;
         }
       })
     }
-    console.log("2");
+    
     if(c==0){
       
     try {
